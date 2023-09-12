@@ -1,6 +1,6 @@
 const express = require("express");
 const User = require("../models/User");
-const { requireUserSignIn } = require("../../../nsfw/server/middleware/auth");
+const { requireUserSignIn } = require("../middleware/auth");
 const router = express.Router();
 
 // edit single user
