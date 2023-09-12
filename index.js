@@ -15,10 +15,12 @@ app.use(express.json());
 
 // user defined routes
 app.use("/auth", require("./routes/auth"));
+app.use("/api/user", require("./routes/user"));
 
-app.use("/", (req, res) => {
-  res.status(200).json({ message: "API for chiziviso" });
-});
+
+// app.use("/", (req, res) => {
+//   res.status(200).json({ message: "API for chiziviso" });
+// });
 
 //not found handler
 app.use((req, res, next) => {
