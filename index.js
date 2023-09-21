@@ -16,6 +16,7 @@ app.use(express.json());
 // user defined routes
 app.use("/auth", require("./routes/auth"));
 app.use("/api/user", require("./routes/user"));
+app.use("/api/location", require("./routes/location"));
 
 
 // app.use("/", (req, res) => {

@@ -27,6 +27,17 @@ const userSchema = mongoose.Schema(
       type: String,
       default: true,
     },
+    role: {
+      type: String,
+      default: 'user'
+    },
+  },{
+    toJSON: {
+      transform(doc, ret) {
+        delete ret.password;
+        delete ret.__v;
+      },
+    },
   },
   {
     timestamps: true,

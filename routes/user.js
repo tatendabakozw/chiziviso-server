@@ -8,8 +8,11 @@ const router = express.Router();
 // /api/user/edit
 router.patch("/edit",requireUserSignIn, async (req, res, next) => {
   try {
-    const { user_id } = req.query;
+    const _user = req.user;
+    const user_id = _user._id
+    // console.log(req.user)
     const user = await User.findOne({ _id: user_id });
+
 
     // get iformation from client
     const {
@@ -76,7 +79,10 @@ router.patch("/edit",requireUserSignIn, async (req, res, next) => {
 // /api/user/single
 router.get("/single", async (req, res, next) => {
   try {
+    const {user_id} = req.query 
     console.log("get single user info");
+    const user = await User.findOne({ _id: user_id })
+    return res.status(200).send({message: 'User found', user})
   } catch (error) {
     next(error);
   }
