@@ -1,5 +1,5 @@
 const express = require("express");
-const { requireUserSignIn, requireAdminSignIn } = require("../middleware/auth");
+const { requireAdminSignIn } = require("../middleware/auth");
 const Location = require("../models/Location");
 const router = express.Router();
 
@@ -9,16 +9,17 @@ const router = express.Router();
 router.post("/add", requireAdminSignIn, async (req, res, next) => {
   try {
     const _user = req.user;
-    const { name, lon, lat, category } = req.body;
+    const { name, lon, lat, category, picture, description } = req.body;
     const newLocation = new Location({
       name,
-      picture: "",
+      picture: picture,
       loc: {
         lon: lon,
         lat: lat,
       },
       user: _user._id,
       category,
+      description
     });
 
     const savedLocation = await newLocation.save();
@@ -40,8 +41,29 @@ router.post("/near", async (req, res, next) => {
     const locations = await Location.find({
       loc: { $near: [lon, lat] },
       category: category,
-    }).limit(2);
+    }).limit(5);
     return res.status(200).send({ locations });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// get single location
+// get request
+// /api.location/single
+router.get("/single", async (req, res, next) => {
+  try {
+    const { location_id } = req.query;
+    if (!location_id) {
+      return res
+        .status(403)
+        .send({ message: "Please provide location identity!" });
+    }
+    const location = await Location.findOne({ _id: location_id });
+    if (!location) {
+      return res.status(404).send({ message: "Location not found" });
+    }
+    return res.status(200).send({ message: "Location found", location });
   } catch (error) {
     next(error);
   }

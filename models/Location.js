@@ -13,12 +13,21 @@ const locationSchema = new mongoose.Schema(
       lon: Number,
       lat: Number,
     },
-    user:{
-        type: String,
-        required: true
+    user: {
+      type: String,
+      required: true,
     },
-    category:{
-        String
+    category: {
+      String,
+    },
+    featured: {
+      type: String,
+      default: "",
+    },
+    description:{
+      type: String,
+      default: '',
+      required: [true, "Please describe your location"]
     }
   },
   {
