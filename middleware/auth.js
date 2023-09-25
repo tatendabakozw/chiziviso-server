@@ -53,12 +53,12 @@ exports.requireAdminSignIn = (req, res, next) => {
                 res.status(500).send({ error: err.message })
             }
             // if token is valid return user object
-            if (user.role === 'admin') {
+            if (user.role === 'user') {
                 req.user = user
                 next()
             }
             else{
-                return res.status(500).send({ message: 'Only Users perform that task' })
+                return res.status(500).send({ message: 'Only Admins perform that task' })
             }
         })
 
