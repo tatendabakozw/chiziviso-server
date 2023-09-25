@@ -19,7 +19,7 @@ router.post("/add", requireAdminSignIn, async (req, res, next) => {
       },
       user: _user._id,
       category,
-      description
+      description,
     });
 
     const savedLocation = await newLocation.save();
@@ -38,10 +38,25 @@ router.post("/add", requireAdminSignIn, async (req, res, next) => {
 router.post("/near", async (req, res, next) => {
   try {
     const { lon, lat, category } = req.body;
-    const locations = await Location.find({
-      loc: { $near: [lon, lat] },
-      category: category,
-    }).limit(5);
+    // const locations = await Location.find({
+    //   loc: { $near: [lon, lat] },
+    //   category: category,
+    // }).limit(5);
+
+
+    const locations = await Location.aggregate([
+      {
+        $geoNear: {
+          near:  [lon, lat],
+          // maxDistance: 500 * 1609,
+          key: "myLocation",
+          spherical: true,
+          distanceField: "distance",
+          category: category,
+          distanceMultiplier: 0.001,
+        },
+      },
+    ])
     return res.status(200).send({ locations });
   } catch (error) {
     next(error);

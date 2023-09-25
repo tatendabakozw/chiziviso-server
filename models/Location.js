@@ -34,6 +34,11 @@ const locationSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// mongoose.model('Location').aggregate().near({
+//   near: [lng, lat],
+//   distanceField: 'distance'
+// })
 locationSchema.index({ loc: "2d" });
 
 module.exports = mongoose.model("Location", locationSchema);
